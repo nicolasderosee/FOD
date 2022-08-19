@@ -1,0 +1,60 @@
+6.Dado el siguiente árbol B de orden 5, mostrar como quedaría el mismo luego de
+realizar las siguientes operaciones: +445, -490, -507, -608. Justificar detalladamente
+cada operación indicando lecturas y escrituras en orden de ocurrencia. Para la
+resolución de underflow debe utilizar política a izquierda. Graficar cada operación porseparado.
+
+2: 0 (320) 1 (490) 4 (555) 5 (641) 3
+
+0: (13)(153)   1: (325)(341)(431)(460)   4: (500)(507)5: (608)(633)   3: (790)(923)
+
+Operacion: +445
+
+  1) Lectura del 2)(raiz), lectura del nodo 1 se intenta dar de alta en el nodo 1, se produce overflow
+    se crea el nodo 6, se dividen las claves del 1 entre ambos nodos, y promociona 431
+
+    2: 0 (320) 1 (490) 4 (555) 5 (641) 3
+
+    0: (13)(153)   1: (325)(341) 6:(445)(460)   4: (500)(507)5: (608)(633)   3: (790)(923)
+
+  2) Al promocionar 431, se propaga el overflow al padre (2) 
+  se crea el nodo 7, se dividen las claves del 2 entre ambos nodos, y promociona 490 y forma la nueva raiz (nodo 8)
+
+    8: 2 (490) 7
+    
+    2: 0 (320) 1 (431) 6   7: 4 (555) 5 (641) 3
+
+    0: (13)(153)   1: (325)(341) 6:(445)(460)   4: (500)(507)5: (608)(633)   3: (790)(923)
+
+  lec/esc= l2,l1,e1,e6,e2,e7,e8
+
+Operacion: -490
+
+  1) Se lee 8(raiz),se lee el 7, se lee 4, se intercambia el menor de los mayores por la raíz(490), quedando en 500, y se da de baja el 490
+
+    8: 2 (500) 7
+    
+    2: 0 (320) 1 (431) 6   7: 4 (555) 5 (641) 3
+
+    0: (13)(153)   1: (325)(341) 6:(445)(460)   4: (507) 5: (608)(633)   3: (790)(923)
+  lec/esc= l8,l7,l4,e4,e8
+
+Operacion: -507
+
+  1) Se lee 8(raiz),se lee el 7, se lee 4, se borra el 507, underflow en el nodo 4, como no tiene hermanos izquierdos
+     se usa el derecho(5), se redistribuye entre 555,|608,633, sube el 608 que es la mitad.
+    8: 2 (500) 7
+    
+    2: 0 (320) 1 (431) 6   7: 4 (608) 5 (641) 3
+
+    0: (13)(153)   1: (325)(341) 6:(445)(460)   4: (555) 5: (633)   3: (790)(923)
+  lec/esc= l8,l7,l4,l5,e4,e5,e7
+
+Operacion: -608
+  1) Se lee 8(raiz),se lee el 7, se intercambia el menor de los mayores(633) por el nodo a eliminar(608), esto deja el nodo 5
+     mas abajo que el límite y produce underflow, el nodo izquierdo posee el mínimo de claves y se fusiona 4 con 5 y el padre(vacio)
+    8: 2 (500) 7
+    
+    2: 0 (320) 1 (431) 6   7: 4 (641) 3
+
+    0: (13)(153)   1: (325)(341) 6:(445)(460)   4: (555)(633)   3: (790)(923)
+  lec/esc= l8,l7,l5,l4,e4,e5,e7
